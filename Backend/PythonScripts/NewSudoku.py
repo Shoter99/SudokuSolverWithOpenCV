@@ -1,8 +1,6 @@
 import copy
 import random
 
-sudoku = [[], [], [], [], [], [], [], [], []]
-
 def SolveSudoku(sudoku):
 
     numbers = ('1', '2', '3', '4', '5', '6', '7', '8', '9')
@@ -17,45 +15,16 @@ def SolveSudoku(sudoku):
             if sudoku[i][j] != ' ':
                 numbersLeft -= 1
      
-    for attempt in range(5000):       
+    for attempt in range(5000):
+        
         numberWasAdded = False
         avaiblePlaces = {}
         avaibleNumbers = {}
+        
         for i in range (9):
             for j in range(9):
                 avaiblePlaces[str(i)+str(j)] = 0
-                        
-        for number in numbers:
-            for i in range (9):
-                if sudoku[i].count(number) == 0:
-                    places = 0
-                    placei = 0
-                    placej = 0
-                    for j in range (9):
-                        if sudoku[i][j] == ' ':
-                            works = True
-                            
-                            for i1 in range (groups[i//3][0], groups[i//3][2]+1):
-                                for j1 in range(groups[j//3][0], groups[j//3][2]+1):
-                                    if sudoku[i1][j1] == number:
-                                        works = False
 
-                            for i2 in range (i%3, 9, 3):
-                                for j2 in range(j%3, 9, 3):
-                                    if sudoku[i2][j2] == number:
-                                        works = False
-                            if works:
-                                avaiblePlaces[str(i)+str(j)] += 1
-                                avaibleNumbers[str(i)+str(j)] = number
-                                places += 1
-                                placei = i
-                                placej = j
-
-                    if places == 1:
-                        numberWasAdded = True
-                        sudoku[placei][placej] = number
-                        numbersLeft -= 1
-        
         try:
             
             for z in range(0, 9, 3):
@@ -108,14 +77,46 @@ def SolveSudoku(sudoku):
             except UnboundLocalError:
                 
                 return 'Cannot solve'
+                        
+        for number in numbers:
+            for i in range (9):
+                if sudoku[i].count(number) == 0:
+                    places = 0
+                    placei = 0
+                    placej = 0
+                    for j in range (9):
+                        if sudoku[i][j] == ' ':
+                            works = True
+                            
+                            for i1 in range (groups[i//3][0], groups[i//3][2]+1):
+                                for j1 in range(groups[j//3][0], groups[j//3][2]+1):
+                                    if sudoku[i1][j1] == number:
+                                        works = False
+
+                            for i2 in range (i%3, 9, 3):
+                                for j2 in range(j%3, 9, 3):
+                                    if sudoku[i2][j2] == number:
+                                        works = False
+                            if works:
+                                avaiblePlaces[str(i)+str(j)] += 1
+                                avaibleNumbers[str(i)+str(j)] = number
+                                places += 1
+                                placei = i
+                                placej = j
+
+                    if places == 1:
+                        numberWasAdded = True
+                        sudoku[placei][placej] = number
+                        numbersLeft -= 1
+
+        for i in range(9):
+            for j in range(9):
+                if avaiblePlaces[str(i)+str(j)] == 1 and sudoku[i][j] == ' ':
+                    sudoku[i][j] = avaibleNumbers[str(i)+str(j)]
+                    numbersLeft -= 1
+                    numberWasAdded = True
          
         if numberWasAdded == False:
-            for i in range(9):
-                for j in range(9):
-                     if avaiblePlaces[str(i)+str(j)] == 1:
-                        sudoku[i][j] = avaibleNumbers[str(i)+str(j)]
-                        numbersLeft -= 1
-                        numberWasAdded = True
 
             if numbersLeft == 0:
                 return sudoku

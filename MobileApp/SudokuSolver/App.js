@@ -3,8 +3,34 @@ import { View,  StyleSheet, Image, Text, TouchableOpacity, StatusBar } from 'rea
 import * as ImagePicker from 'expo-image-picker';
 import AppBar from './components/AppBar';
 import Main from './components/Main';
+import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
 export default function ImagePickerExample() {
+
+  const URI = "https://4f27-85-237-187-72.eu.ngrok.io"
+  const [waitingForResponse, setWaitingForResponse] = useState(false);
+  const [grid,setGrid] = useState([[' ', '2', ' ', '4', ' ', '6', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', '5', ' ', '7', ' '], [' ', ' ', ' ', '1', ' ', ' ', ' ', '3', ' '], [' ', '1', ' ', '8', ' ', '2', ' ', '9', ' '], [' ', ' ', '2', ' ', '5', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', '7', '8', ' ', ' '], [' ', ' ', ' ', '5', ' ', '8', '9', ' ', ' '], ['4', ' ', ' ', ' ', ' ', '6', ' ', ' ', ' '], [' ', ' ', '1', '4', ' ', ' ', ' ', ' ', ' ']])
+
+  const fetchSolution = async () => {
+    setWaitingForResponse(true);
+    console.log(JSON.stringify({board:grid}))
+    const response = await fetch(`${URI}/api/solve`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        board: grid,
+      }),
+    })
+    .catch(err => {console.error(err)})
+    .finally(() => {setWaitingForResponse(false)})
+    const data = await response.json()
+    // console.log(data)
+    setGrid(data);
+  }
+
+
   const [image, setImage] = useState(null);
 
   const pickImage = async () => {
@@ -25,13 +51,17 @@ export default function ImagePickerExample() {
   return (
     <View style={styles.screen}>
       <AppBar></AppBar>
-      <Main ></Main>
+      {
+        waitingForResponse ? <Text style={styles.loading}>Solving...</Text> :
+        <Main grid={grid} fetchSolution={fetchSolution} ></Main>
+      }
       {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
       <TouchableOpacity style={styles.cameraBtn} onPress={pickImage}>
         <Text style={{fontSize:29}}>
             📷
         </Text>
       </TouchableOpacity>
+      <ExpoStatusBar></ExpoStatusBar>
     </View>
   );
 }
@@ -54,4 +84,10 @@ const styles = StyleSheet.create({
  container: {
   flex: 1 
  },
+ loading: {
+  flex: 1,
+  alignItems: "center",
+  justifyContent: "center",
+  color: "white",
+ }
 })

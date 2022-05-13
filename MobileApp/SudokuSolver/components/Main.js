@@ -1,29 +1,19 @@
 import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
+import {React, useState} from "react";
 import Grid from "./Grid";
 
-const Main = () => {
-  const grid = [
-    [1, 0, 0, 1, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 0, 1, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [1, 0, 0, 1, 0, 0, 1, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-    [0, 0, 0, 0, 0, 0, 0, 0, 0],
-  ];
+const Main = ({grid, fetchSolution}) => {
+  
   return (
     <View style={styles.container}>
       {grid.map((elem, index) => {
         return <Grid key={index} grid={elem} />;
       })}
-      {/* <TouchableOpacity style={styles.solveBtn}>
+      <TouchableOpacity onPress={fetchSolution} style={styles.solveBtn}>
           <Text style={styles.text}>
               Solve
           </Text>
-      </TouchableOpacity> */}
+      </TouchableOpacity>
     </View>
   );
 };

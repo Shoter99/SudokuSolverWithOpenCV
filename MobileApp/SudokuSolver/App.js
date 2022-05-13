@@ -7,7 +7,7 @@ import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
 export default function ImagePickerExample() {
 
-  const URI = "https://4f27-85-237-187-72.eu.ngrok.io"
+  const URI = "https://fff6-85-237-187-72.eu.ngrok.io"
   const [waitingForResponse, setWaitingForResponse] = useState(false);
   const [grid,setGrid] = useState([[' ', '2', ' ', '4', ' ', '6', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', '5', ' ', '7', ' '], [' ', ' ', ' ', '1', ' ', ' ', ' ', '3', ' '], [' ', '1', ' ', '8', ' ', '2', ' ', '9', ' '], [' ', ' ', '2', ' ', '5', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', '7', '8', ' ', ' '], [' ', ' ', ' ', '5', ' ', '8', '9', ' ', ' '], ['4', ' ', ' ', ' ', ' ', '6', ' ', ' ', ' '], [' ', ' ', '1', '4', ' ', ' ', ' ', ' ', ' ']])
 
@@ -30,6 +30,16 @@ export default function ImagePickerExample() {
     setGrid(data);
   }
 
+  const createFormData = (photo) => {
+    const data = new FormData();
+    console.log(photo.uri)
+    data.append('photo', {
+      name: 'board',
+      type: 'image/jpeg',
+      uri: Platform.OS === 'ios' ? photo.uri.replace('file://', '') : photo.uri,
+    });
+    return data;
+  };
 
   const [image, setImage] = useState(null);
 
@@ -44,7 +54,22 @@ export default function ImagePickerExample() {
     console.log(result);
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      const formData = createFormData(result);
+      console.log(formData);
+      await fetch(
+        `${URI}/api/read_numbers`,
+        {
+
+          method: 'POST',
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+          body: formData,
+        }
+        )
+        .then(response => response.json())
+        .then(res => console.log('response',res))
+        .catch(err => console.error('error', err))
     }
   };
 

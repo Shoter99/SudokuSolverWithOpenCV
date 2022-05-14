@@ -7,7 +7,7 @@ import ExpoStatusBar from 'expo-status-bar/build/ExpoStatusBar';
 
 export default function ImagePickerExample() {
 
-  const URI = "https://fff6-85-237-187-72.eu.ngrok.io"
+  const URI = "https://0746-85-237-187-72.eu.ngrok.io"
   const [waitingForResponse, setWaitingForResponse] = useState(false);
   const [grid,setGrid] = useState([[' ', '2', ' ', '4', ' ', '6', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', '5', ' ', '7', ' '], [' ', ' ', ' ', '1', ' ', ' ', ' ', '3', ' '], [' ', '1', ' ', '8', ' ', '2', ' ', '9', ' '], [' ', ' ', '2', ' ', '5', ' ', ' ', ' ', ' '], [' ', ' ', ' ', ' ', ' ', '7', '8', ' ', ' '], [' ', ' ', ' ', '5', ' ', '8', '9', ' ', ' '], ['4', ' ', ' ', ' ', ' ', '6', ' ', ' ', ' '], [' ', ' ', '1', '4', ' ', ' ', ' ', ' ', ' ']])
 

@@ -25,9 +25,11 @@ def SolveSudoku(sudoku):
         for i in range (9):
             for j in range(9):
                 avaiblePlaces[str(i)+str(j)] = 0
-                for number in range (1, 10):
-                    canGo[str(number)+str(i)+str(j)] = False
-
+                for number in numbers:
+                    canGo[number+str(i)+str(j)] = False
+                    
+        #Sprawdzanie, czy się wszystko zgadza oraz uzupełnianie wierszy i kolumn, jeżeli brakuje tylko 1 liczby
+        
         try:
             
             for z in range(0, 9, 3):
@@ -61,6 +63,8 @@ def SolveSudoku(sudoku):
                                     numberWasAdded = True
 
         except ValueError:
+            
+            #Próba nie powiodła się, powrót do zapisanej listy
 
             try:
                 
@@ -71,18 +75,20 @@ def SolveSudoku(sudoku):
                     
                     i = randint(0, 8)
                     j = randint(0, 8)
-                    number = randint(1, 9)
-                    if savedCanGo[str(number)+str(i)+str(j)] is True:
+                    number = str(randint(1, 9))
+                    if savedCanGo[number+str(i)+str(j)] is True:
                         break
                     
-                sudoku[int(i)][int(j)] = str(number)
+                sudoku[i][j] = number
                 numbersLeft -= 1
                 continue
         
             except UnboundLocalError:
                 
                 return 'Cannot solve'
-                        
+     
+        #Sprawdzanie, gdzie każda liczba może być wypisana
+        
         for number in numbers:
             for i in range (9):
                 if sudoku[i].count(number) == 0:
@@ -110,11 +116,15 @@ def SolveSudoku(sudoku):
                                 placei = i
                                 placej = j
 
+                    #Dodanie liczby, jeśli w danej komórce ma tylko jedne możliwe miejsce
+                                
                     if places == 1:
                         numberWasAdded = True
                         sudoku[placei][placej] = number
                         numbersLeft -= 1
 
+        #Wpisanie liczby do komórki, jeżeli w tej komórce pasuje tylko 1 liczba                
+                        
         for i in range(9):
             for j in range(9):
                 if avaiblePlaces[str(i)+str(j)] == 1 and sudoku[i][j] == ' ':
@@ -127,7 +137,12 @@ def SolveSudoku(sudoku):
             if numbersLeft == 0:
                 return sudoku
 
+            #Nie ma żadnej liczby z tylko jedną możliwością bądź komórki z tylko jedną możliwością, rozpoczęcie kombinowania
+            
             if numberWasAdded is False:
+                
+                #Zapisanie list w momencie, kiedy trzeba zacząć kombinować
+                
                 if firstTime:
                     savedNumbersLeft = numbersLeft
                     firstTime = False
@@ -139,11 +154,11 @@ def SolveSudoku(sudoku):
                     
                     i = randint(0, 8)
                     j = randint(0, 8)
-                    number = randint(1, 9)
-                    if canGo[str(number)+str(i)+str(j)] is True:
+                    number = str(randint(1, 9))
+                    if canGo[number+str(i)+str(j)] is True:
                         break
                     
-                sudoku[int(i)][int(j)] = str(number)
+                sudoku[i][j] = number
                 numbersLeft -= 1
                 
     return 'Cannot solve'

@@ -1,5 +1,5 @@
-import copy
-import random
+from copy import deepcopy
+from random import randint
 
 def SolveSudoku(sudoku):
 
@@ -15,15 +15,18 @@ def SolveSudoku(sudoku):
             if sudoku[i][j] != ' ':
                 numbersLeft -= 1
      
-    for attempt in range(1000000):
+    while True:
         
         numberWasAdded = False
         avaiblePlaces = {}
         avaibleNumbers = {}
+        canGo = {}
         
         for i in range (9):
             for j in range(9):
                 avaiblePlaces[str(i)+str(j)] = 0
+                for number in range (1, 10):
+                    canGo[str(number)+str(i)+str(j)] = False
 
         try:
             
@@ -60,19 +63,21 @@ def SolveSudoku(sudoku):
         except ValueError:
 
             try:
-            
+                
                 numbersLeft = savedNumbersLeft
-                sudoku = copy.deepcopy(testSudoku)
+                sudoku = deepcopy(testSudoku)
+
                 while True:
-                        i = random.randint(0, 8)
-                        j = random.randint(0, 8)
-                        if sudoku[int(i)][int(j)] == ' ':
-                            number = random.randint(1, 9)
-                            break
+                    
+                    i = randint(0, 8)
+                    j = randint(0, 8)
+                    number = randint(1, 9)
+                    if savedCanGo[str(number)+str(i)+str(j)] is True:
+                        break
+                    
                 sudoku[int(i)][int(j)] = str(number)
                 numbersLeft -= 1
                 numberWasAdded = True
-                continue
         
             except UnboundLocalError:
                 
@@ -100,6 +105,7 @@ def SolveSudoku(sudoku):
                             if works:
                                 avaiblePlaces[str(i)+str(j)] += 1
                                 avaibleNumbers[str(i)+str(j)] = number
+                                canGo[number+str(i)+str(j)] = True
                                 places += 1
                                 placei = i
                                 placej = j
@@ -116,24 +122,25 @@ def SolveSudoku(sudoku):
                     numbersLeft -= 1
                     numberWasAdded = True
          
-        if numberWasAdded == False:
+        if numberWasAdded is False:
 
             if numbersLeft == 0:
                 return sudoku
 
-            if numberWasAdded == False:
+            if numberWasAdded is False:
                 if firstTime:
                     savedNumbersLeft = numbersLeft
                     firstTime = False
                     testSudoku = []
-                    testSudoku = copy.deepcopy(sudoku)
+                    testSudoku = deepcopy(sudoku)
+                    savedCanGo = deepcopy(canGo)
                 
                 while True:
                     
-                    i = random.randint(0, 8)
-                    j = random.randint(0, 8)                   
-                    if sudoku[int(i)][int(j)] == ' ':
-                        number = random.randint(1, 9)
+                    i = randint(0, 8)
+                    j = randint(0, 8)
+                    number = randint(1, 9)
+                    if canGo[str(number)+str(i)+str(j)] is True:
                         break
                     
                 sudoku[int(i)][int(j)] = str(number)

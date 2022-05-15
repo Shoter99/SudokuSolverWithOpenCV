@@ -124,8 +124,8 @@ def SolveSudoku(sudoku):
          
         if numberWasAdded is False:
 
-            #if numbersLeft == 0:
-                #return sudoku
+            if numbersLeft == 0:
+                return sudoku
 
             if numberWasAdded is False:
                 if firstTime:

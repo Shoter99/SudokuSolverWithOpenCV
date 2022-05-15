@@ -15,7 +15,7 @@ def SolveSudoku(sudoku):
             if sudoku[i][j] != ' ':
                 numbersLeft -= 1
      
-    for attempt in range(5000):
+    for attempt in range(1000000):
         
         numberWasAdded = False
         avaiblePlaces = {}

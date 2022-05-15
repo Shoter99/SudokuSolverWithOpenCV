@@ -77,10 +77,21 @@ export default function ImagePickerExample() {
     <View style={styles.screen}>
       <AppBar></AppBar>
       {
-        waitingForResponse ? <Text style={styles.loading}>Solving...</Text> :
+        waitingForResponse ? 
+        <View style={{flex:1, justifyContent: 'center'}}>
+
+        <Image
+          style={{width: 150, height: 150}}
+          source={require('./assets/loading.gif')}
+          ></Image>
+          </View>
+        
+        :
         <Main grid={grid} fetchSolution={fetchSolution} ></Main>
       }
       {image && <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />}
+
+
       <TouchableOpacity style={styles.cameraBtn} onPress={pickImage}>
         <Text style={{fontSize:29}}>
             📷
@@ -96,7 +107,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#ccc',
     borderRadius: 50,
     padding: 20,
-    marginBottom: 20,
+    marginBottom: 40,
 },
   screen: {
     marginTop: StatusBar.currentHeight,

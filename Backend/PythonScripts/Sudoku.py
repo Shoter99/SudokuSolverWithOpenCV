@@ -77,7 +77,7 @@ def SolveSudoku(sudoku):
                     
                 sudoku[int(i)][int(j)] = str(number)
                 numbersLeft -= 1
-                numberWasAdded = True
+                continue
         
             except UnboundLocalError:
                 
@@ -145,6 +145,5 @@ def SolveSudoku(sudoku):
                     
                 sudoku[int(i)][int(j)] = str(number)
                 numbersLeft -= 1
-                numberWasAdded = True
                 
     return 'Cannot solve'

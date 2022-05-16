@@ -13,6 +13,7 @@ import AppBar from "./components/AppBar";
 import Main from "./components/Main";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
+
 export default function ImagePickerExample() {
   const URI = "https://0746-85-237-187-72.eu.ngrok.io";
   // const URI = "https://0746-85-237-187-7.eu.ngrok.io"
@@ -146,7 +147,7 @@ export default function ImagePickerExample() {
       )}
 
       <TouchableOpacity style={styles.cameraBtn} onPress={pickImage}>
-        <Text style={{ fontSize: 29 }}>📷</Text>
+        
       </TouchableOpacity>
       <ExpoStatusBar></ExpoStatusBar>
     </View>
@@ -155,7 +156,7 @@ export default function ImagePickerExample() {
 
 const styles = StyleSheet.create({
   cameraBtn: {
-    backgroundColor: "#ccc",
+    backgroundColor: "#00ADB5",
     borderRadius: 50,
     padding: 20,
     marginBottom: 40,
@@ -165,10 +166,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "#333",
+    backgroundColor: "#393E46",
   },
   container: {
     flex: 1,
+
   },
   loading: {
     flex: 1,

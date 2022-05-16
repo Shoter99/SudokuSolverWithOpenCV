@@ -1,11 +1,11 @@
-import { SafeAreaView, StyleSheet, Text, View } from 'react-native'
+import { SafeAreaView, StyleSheet, Text, View, KeyboardAvoidingView } from 'react-native'
 import React from 'react'
 
 export default function AppBar() {
   return (
-    <View style={styles.container}>
+    <KeyboardAvoidingView behavior="padding" style={styles.container}>
       <Text style={styles.title}>Sudoku Solver</Text>
-    </View>
+    </KeyboardAvoidingView>
   )
 }
 
@@ -13,7 +13,7 @@ const styles = StyleSheet.create({
     container: {
         margin: 0, 
         padding: 0,
-        backgroundColor: '#eee',
+        backgroundColor: '#00ADB5',
         width: '100%',
         height: '8%',
         justifyContent: 'center',
@@ -24,5 +24,6 @@ const styles = StyleSheet.create({
     },
     title: { 
         fontSize: 20,
+        color: '#222831'
     }
 })

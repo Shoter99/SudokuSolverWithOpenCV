@@ -1,5 +1,5 @@
-import copy
-import random
+from copy import deepcopy
+from random import randint
 
 def SolveSudoku(sudoku):
 
@@ -15,16 +15,21 @@ def SolveSudoku(sudoku):
             if sudoku[i][j] != ' ':
                 numbersLeft -= 1
      
-    for attempt in range(5000):
+    while True:
         
         numberWasAdded = False
         avaiblePlaces = {}
         avaibleNumbers = {}
+        canGo = {}
         
         for i in range (9):
             for j in range(9):
                 avaiblePlaces[str(i)+str(j)] = 0
-
+                for number in numbers:
+                    canGo[number+str(i)+str(j)] = False
+                    
+        #Sprawdzanie, czy się wszystko zgadza oraz uzupełnianie wierszy i kolumn, jeżeli brakuje tylko 1 liczby
+        
         try:
             
             for z in range(0, 9, 3):
@@ -58,26 +63,32 @@ def SolveSudoku(sudoku):
                                     numberWasAdded = True
 
         except ValueError:
+            
+            #Próba nie powiodła się, powrót do zapisanej listy
 
             try:
-            
+                
                 numbersLeft = savedNumbersLeft
-                sudoku = copy.deepcopy(testSudoku)
+                sudoku = deepcopy(testSudoku)
+
                 while True:
-                        i = random.randint(0, 8)
-                        j = random.randint(0, 8)
-                        if sudoku[int(i)][int(j)] == ' ':
-                            number = random.randint(1, 9)
-                            break
-                sudoku[int(i)][int(j)] = str(number)
+                    
+                    i = randint(0, 8)
+                    j = randint(0, 8)
+                    number = str(randint(1, 9))
+                    if savedCanGo[number+str(i)+str(j)] is True:
+                        break
+                    
+                sudoku[i][j] = number
                 numbersLeft -= 1
-                numberWasAdded = True
                 continue
         
             except UnboundLocalError:
                 
                 return 'Cannot solve'
-                        
+     
+        #Sprawdzanie, gdzie każda liczba może być wypisana
+        
         for number in numbers:
             for i in range (9):
                 if sudoku[i].count(number) == 0:
@@ -100,15 +111,20 @@ def SolveSudoku(sudoku):
                             if works:
                                 avaiblePlaces[str(i)+str(j)] += 1
                                 avaibleNumbers[str(i)+str(j)] = number
+                                canGo[number+str(i)+str(j)] = True
                                 places += 1
                                 placei = i
                                 placej = j
 
+                    #Dodanie liczby, jeśli w danej komórce ma tylko jedne możliwe miejsce
+                                
                     if places == 1:
                         numberWasAdded = True
                         sudoku[placei][placej] = number
                         numbersLeft -= 1
 
+        #Wpisanie liczby do komórki, jeżeli w tej komórce pasuje tylko 1 liczba                
+                        
         for i in range(9):
             for j in range(9):
                 if avaiblePlaces[str(i)+str(j)] == 1 and sudoku[i][j] == ' ':
@@ -116,28 +132,33 @@ def SolveSudoku(sudoku):
                     numbersLeft -= 1
                     numberWasAdded = True
          
-        if numberWasAdded == False:
+        if numberWasAdded is False:
 
             if numbersLeft == 0:
                 return sudoku
 
-            if numberWasAdded == False:
+            #Nie ma żadnej liczby z tylko jedną możliwością bądź komórki z tylko jedną możliwością, rozpoczęcie kombinowania
+            
+            if numberWasAdded is False:
+                
+                #Zapisanie list w momencie, kiedy trzeba zacząć kombinować
+                
                 if firstTime:
                     savedNumbersLeft = numbersLeft
                     firstTime = False
                     testSudoku = []
-                    testSudoku = copy.deepcopy(sudoku)
+                    testSudoku = deepcopy(sudoku)
+                    savedCanGo = deepcopy(canGo)
                 
                 while True:
                     
-                    i = random.randint(0, 8)
-                    j = random.randint(0, 8)                   
-                    if sudoku[int(i)][int(j)] == ' ':
-                        number = random.randint(1, 9)
+                    i = randint(0, 8)
+                    j = randint(0, 8)
+                    number = str(randint(1, 9))
+                    if canGo[number+str(i)+str(j)] is True:
                         break
                     
-                sudoku[int(i)][int(j)] = str(number)
+                sudoku[i][j] = number
                 numbersLeft -= 1
-                numberWasAdded = True
                 
     return 'Cannot solve'

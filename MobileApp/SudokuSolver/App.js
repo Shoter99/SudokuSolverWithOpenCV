@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StatusBar,
   Alert,
+  KeyboardAvoidingView
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AppBar from "./components/AppBar";
@@ -14,21 +15,45 @@ import Main from "./components/Main";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
 
 
+
 export default function ImagePickerExample() {
   const URI = "https://0746-85-237-187-72.eu.ngrok.io";
   // const URI = "https://0746-85-237-187-7.eu.ngrok.io"
   const [waitingForResponse, setWaitingForResponse] = useState(false);
   const [grid, setGrid] = useState([
-    [" ", "2", " ", "4", " ", "6", " ", " ", " "],
-    [" ", " ", " ", " ", " ", "5", " ", "7", " "],
-    [" ", " ", " ", "1", " ", " ", " ", "3", " "],
-    [" ", "1", " ", "8", " ", "2", " ", "9", " "],
-    [" ", " ", "2", " ", "5", " ", " ", " ", " "],
-    [" ", " ", " ", " ", " ", "7", "8", " ", " "],
-    [" ", " ", " ", "5", " ", "8", "9", " ", " "],
-    ["4", " ", " ", " ", " ", "6", " ", " ", " "],
-    [" ", " ", "1", "4", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    [" ", " ", " ", " ", " ", " ", " ", " ", " "],
   ]);
+
+  const clearGrid = () =>
+  {
+    setGrid([
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
+    ])
+  }
+
+  const changeValue = (idx, idy, val) => {
+    // console.log(idx, idy, val);
+    let newGrid = [...grid]
+    // console.log(newGrid);
+    newGrid[idx][idy] = val
+    setGrid(newGrid)
+  }
 
   const sendErrorAlert = (message) => {
     Alert.alert(
@@ -62,25 +87,25 @@ export default function ImagePickerExample() {
     })
       .then((res) => {
         if (res.status === 200) {
-          data = res
+          res
             .json()
             .then((data) => {
               if (data === "Cannot solve")
                 sendErrorAlert("Cannot solve this sudoku, try different one.");
               else {
-                console.log(data);
+                // console.log(data);
                 setGrid(data);
               }
             })
             .catch((err) =>
-              sendErrorAlert("Something Wrong! Try again later.")
+              sendErrorAlert("Something Wrong! Try again later."+err.message)
             );
         } else {
           throw new Error(res.statusText);
         }
       })
       .catch((err) => {
-        sendErrorAlert("Server not responding! Try again later.");
+        sendErrorAlert("Server not responding! Try again later."+err.message);
       })
       .finally(() => {
         setWaitingForResponse(false);
@@ -90,7 +115,7 @@ export default function ImagePickerExample() {
 
   const createFormData = (photo) => {
     const data = new FormData();
-    console.log(photo.uri);
+    // console.log(photo.uri);
     data.append("photo", {
       name: "board",
       type: "image/jpeg",
@@ -131,6 +156,7 @@ export default function ImagePickerExample() {
 
   return (
     <View style={styles.screen}>
+      
       <AppBar></AppBar>
       {waitingForResponse ? (
         <View style={{ flex: 1, justifyContent: "center" }}>
@@ -140,27 +166,19 @@ export default function ImagePickerExample() {
           ></Image>
         </View>
       ) : (
-        <Main grid={grid} fetchSolution={fetchSolution}></Main>
+        <Main changeValue={changeValue} clearGrid={clearGrid} grid={grid} pickImage={pickImage} fetchSolution={fetchSolution}></Main>
       )}
       {image && (
         <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
       )}
-
-      <TouchableOpacity style={styles.cameraBtn} onPress={pickImage}>
-        
-      </TouchableOpacity>
+      
       <ExpoStatusBar></ExpoStatusBar>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  cameraBtn: {
-    backgroundColor: "#00ADB5",
-    borderRadius: 50,
-    padding: 20,
-    marginBottom: 40,
-  },
+ 
   screen: {
     marginTop: StatusBar.currentHeight,
     flex: 1,

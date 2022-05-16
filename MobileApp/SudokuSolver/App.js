@@ -7,13 +7,14 @@ import {
   TouchableOpacity,
   StatusBar,
   Alert,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AppBar from "./components/AppBar";
 import Main from "./components/Main";
 import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
-
+import {Icon } from 'react-native-elements'
 
 
 export default function ImagePickerExample() {
@@ -158,27 +159,30 @@ export default function ImagePickerExample() {
     <View style={styles.screen}>
       
       <AppBar></AppBar>
+
       {waitingForResponse ? (
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Image
             style={{ width: 150, height: 150 }}
             source={require("./assets/loading.gif")}
-          ></Image>
+            ></Image>
         </View>
       ) : (
         <Main changeValue={changeValue} clearGrid={clearGrid} grid={grid} pickImage={pickImage} fetchSolution={fetchSolution}></Main>
-      )}
-      {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
-      )}
-      
-      <ExpoStatusBar></ExpoStatusBar>
+        )}   
     </View>
   );
 }
 
 const styles = StyleSheet.create({
- 
+  cameraBtn: {
+    backgroundColor: "#00ADB5",
+    borderRadius: 50,
+    padding: 20,
+    position: "absolute",
+    bottom: "5%",
+
+  },
   screen: {
     marginTop: StatusBar.currentHeight,
     flex: 1,

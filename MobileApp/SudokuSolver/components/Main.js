@@ -1,4 +1,4 @@
-import { Button, FlatList, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Button, FlatList, ScrollView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import {React, useState} from "react";
 import Grid from "./Grid";
 import {Icon } from 'react-native-elements'
@@ -11,10 +11,12 @@ const Main = ({grid, fetchSolution, pickImage, changeValue, clearGrid}) => {
       {grid.map((elem, index) => {
         return <Grid changeValue={changeValue} key={index} idx={index} grid={elem} />;
       })}
-      <View>
+      <ScrollView >
       <View style={{ 
         display: 'flex',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        justifyContent: 'center', 
+        alignItems: 'center',
       }}>
 
       <TouchableOpacity onPress={fetchSolution} style={styles.solveBtn}>
@@ -30,11 +32,14 @@ const Main = ({grid, fetchSolution, pickImage, changeValue, clearGrid}) => {
           </Text>
       </TouchableOpacity>
       </View>
+      <View style={{    alignItems: "center",
+    justifyContent: "center"}}>
 
       <TouchableOpacity style={styles.cameraBtn} onPress={pickImage}>
         <Icon name="camera" type="font-awesome" color="#222831" />
       </TouchableOpacity>
       </View>
+      </ScrollView>
     </View>
   );
 };
@@ -46,7 +51,8 @@ const styles = StyleSheet.create({
     backgroundColor: "#00ADB5",
     borderRadius: 50,
     padding: 20,
-    marginTop: 60,
+    width: 200,
+
 
   },
   container: {
@@ -69,6 +75,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 15,
         paddingVertical: 5,
         margin: 10,
+        marginBottom: 20,
     }
 
 });

@@ -52,7 +52,7 @@ export default function ImagePickerExample() {
     // console.log(idx, idy, val);
     let newGrid = [...grid]
     // console.log(newGrid);
-    newGrid[idx][idy] = val
+    newGrid[idx][idy] = val == "" ? " " : val
     setGrid(newGrid)
   }
 

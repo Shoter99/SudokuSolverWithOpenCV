@@ -18,13 +18,13 @@ def SolveSudoku(sudoku):
     while True:
         
         numberWasAdded = False
-        avaiblePlaces = {}
-        avaibleNumbers = {}
+        possibleNumbers = {}
+        numberToPlace = {}
         canGo = {}
         
         for i in range (9):
             for j in range(9):
-                avaiblePlaces[str(i)+str(j)] = 0
+                possibleNumbers[str(i)+str(j)] = 0
                 for number in numbers:
                     canGo[number+str(i)+str(j)] = False
                     
@@ -99,18 +99,25 @@ def SolveSudoku(sudoku):
                         if sudoku[i][j] == ' ':
                             works = True
                             
-                            for i1 in range (groups[i//3][0], groups[i//3][2]+1):
-                                for j1 in range(groups[j//3][0], groups[j//3][2]+1):
-                                    if sudoku[i1][j1] == number:
+                            for z in range (groups[i//3][0], groups[i//3][2]+1):
+                                for k in range(groups[j//3][0], groups[j//3][2]+1):
+                                    if sudoku[z][k] == number:
                                         works = False
-
-                            for i2 in range (i%3, 9, 3):
-                                for j2 in range(j%3, 9, 3):
-                                    if sudoku[i2][j2] == number:
-                                        works = False
+                                        break
+                                if works is False:
+                                    break
                             if works:
-                                avaiblePlaces[str(i)+str(j)] += 1
-                                avaibleNumbers[str(i)+str(j)] = number
+                                for z in range (i%3, 9, 3):
+                                    for k in range(j%3, 9, 3):
+                                        if sudoku[z][k] == number:
+                                            works = False
+                                            break
+                                    if works is False:
+                                        break
+                                    
+                            if works:
+                                possibleNumbers[str(i)+str(j)] += 1
+                                numberToPlace[str(i)+str(j)] = number
                                 canGo[number+str(i)+str(j)] = True
                                 places += 1
                                 placei = i
@@ -127,15 +134,13 @@ def SolveSudoku(sudoku):
                         
         for i in range(9):
             for j in range(9):
-                if avaiblePlaces[str(i)+str(j)] == 1 and sudoku[i][j] == ' ':
-                    sudoku[i][j] = avaibleNumbers[str(i)+str(j)]
+                if possibleNumbers[str(i)+str(j)] == 1 and sudoku[i][j] == ' ':
+                    sudoku[i][j] = numberToPlace[str(i)+str(j)]
                     numbersLeft -= 1
                     numberWasAdded = True
-         
-        if numberWasAdded is False:
 
-            if numbersLeft == 0:
-                return sudoku
+        if numbersLeft == 0:
+            return sudoku
 
             #Nie ma żadnej liczby z tylko jedną możliwością bądź komórki z tylko jedną możliwością, rozpoczęcie kombinowania
             

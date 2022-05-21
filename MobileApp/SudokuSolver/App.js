@@ -3,25 +3,18 @@ import {
   View,
   StyleSheet,
   Image,
-  Text,
-  TouchableOpacity,
   StatusBar,
   Alert,
-  KeyboardAvoidingView,
-  ScrollView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import AppBar from "./components/AppBar";
 import Main from "./components/Main";
-import ExpoStatusBar from "expo-status-bar/build/ExpoStatusBar";
-import {Icon } from 'react-native-elements'
 
 
 export default function ImagePickerExample() {
   const URI = "https://0746-85-237-187-72.eu.ngrok.io";
   // const URI = "https://0746-85-237-187-7.eu.ngrok.io"
-  const [waitingForResponse, setWaitingForResponse] = useState(false);
-  const [grid, setGrid] = useState([
+  const DEFAULT_GRID = [
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
@@ -31,28 +24,19 @@ export default function ImagePickerExample() {
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-  ]);
+  ]
+  const [grid, setGrid] = useState(DEFAULT_GRID)
 
   const clearGrid = () =>
   {
-    setGrid([
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-      [" ", " ", " ", " ", " ", " ", " ", " ", " "],
-    ])
+    setGrid(DEFAULT_GRID)
   }
 
   const changeValue = (idx, idy, val) => {
     // console.log(idx, idy, val);
     let newGrid = [...grid]
     // console.log(newGrid);
-    newGrid[idx][idy] = val
+    newGrid[idx][idy] = val == "" ? " " : val
     setGrid(newGrid)
   }
 
@@ -159,7 +143,6 @@ export default function ImagePickerExample() {
     <View style={styles.screen}>
       
       <AppBar></AppBar>
-
       {waitingForResponse ? (
         <View style={{ flex: 1, justifyContent: "center" }}>
           <Image

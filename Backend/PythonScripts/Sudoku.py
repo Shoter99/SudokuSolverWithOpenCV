@@ -146,7 +146,7 @@ def SolveSudoku(sudoku):
             
         if numberWasAdded is False:
                 
-            #Zapisanie list w momencie, kiedy trzeba zacząć kombinować
+        #Zapisanie list w momencie, kiedy trzeba zacząć kombinować
                 
             if firstTime:
                 savedNumbersLeft = numbersLeft

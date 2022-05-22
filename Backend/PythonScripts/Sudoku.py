@@ -142,7 +142,7 @@ def SolveSudoku(sudoku):
         if numbersLeft == 0:
             return sudoku
 
-        #Nie ma żadnej liczby z tylko jedną możliwością bądź komórki z tylko jedną możliwością, rozpoczęcie kombinowania
+            #Nie ma żadnej liczby z tylko jedną możliwością bądź komórki z tylko jedną możliwością, rozpoczęcie kombinowania
             
         if numberWasAdded is False:
                 

@@ -142,28 +142,28 @@ def SolveSudoku(sudoku):
         if numbersLeft == 0:
             return sudoku
 
-            #Nie ma żadnej liczby z tylko jedną możliwością bądź komórki z tylko jedną możliwością, rozpoczęcie kombinowania
+        #Nie ma żadnej liczby z tylko jedną możliwością bądź komórki z tylko jedną możliwością, rozpoczęcie kombinowania
             
-            if numberWasAdded is False:
+        if numberWasAdded is False:
                 
-                #Zapisanie list w momencie, kiedy trzeba zacząć kombinować
+            #Zapisanie list w momencie, kiedy trzeba zacząć kombinować
                 
-                if firstTime:
-                    savedNumbersLeft = numbersLeft
-                    firstTime = False
-                    testSudoku = []
-                    testSudoku = deepcopy(sudoku)
-                    savedCanGo = deepcopy(canGo)
+            if firstTime:
+                savedNumbersLeft = numbersLeft
+                firstTime = False
+                testSudoku = []
+                testSudoku = deepcopy(sudoku)
+                savedCanGo = deepcopy(canGo)
+            
+            while True:
                 
-                while True:
-                    
-                    i = randint(0, 8)
-                    j = randint(0, 8)
-                    number = str(randint(1, 9))
-                    if canGo[number+str(i)+str(j)] is True:
-                        break
-                    
-                sudoku[i][j] = number
-                numbersLeft -= 1
+                i = randint(0, 8)
+                j = randint(0, 8)
+                number = str(randint(1, 9))
+                if canGo[number+str(i)+str(j)] is True:
+                    break
+                
+            sudoku[i][j] = number
+            numbersLeft -= 1
                 
     return 'Cannot solve'

@@ -25,6 +25,7 @@ export default function ImagePickerExample() {
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
     [" ", " ", " ", " ", " ", " ", " ", " ", " "],
   ]
+  const [waitingForResponse, setWaitingForResponse] = useState(false)
   const [grid, setGrid] = useState(DEFAULT_GRID)
 
   const clearGrid = () =>
@@ -97,7 +98,10 @@ export default function ImagePickerExample() {
       });
     // console.log(data)
   };
-
+  const sendTestFetch = () => { 
+    fetch(`${URI}/api/test`)
+    .then(res => sendErrorAlert(res.message)) 
+  }
   const createFormData = (photo) => {
     const data = new FormData();
     // console.log(photo.uri);

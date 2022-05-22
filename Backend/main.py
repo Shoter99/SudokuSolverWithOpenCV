@@ -9,11 +9,12 @@ class Board(BaseModel):
     board: list
 
 @app.post("/api/solve")
-def home(board: Board):
-    
+def sovle(board: Board):
     # print(SolveSudoku(res["board"]))
+    print("Request recieved!")
     res = SolveSudoku(board.board)
-    if !res:
+    print(res)
+    if not res:
         return {'error': 'Something went wrong! Try again'}
     if res == "Cannot Solve":
         return {'error': 'Sorry Sudoku is not solvable, try different one'}
@@ -23,8 +24,8 @@ def test():
     return 'test'
 
 @app.post('/api/read_numbers')
-def read_numbers(photo: UploadFile):
-    rand = randint(1000)
+def read_numbers(photo: bytes = File(...)):
+    rand = randint(1,1000)
     with open(f'image{rand}', 'wb') as img:
         img.write(photo)
     return "File sent"

@@ -1,7 +1,9 @@
+import os
 from fastapi import FastAPI, File, UploadFile
 from random import randint
 from pydantic import BaseModel
 from PythonScripts.Sudoku import SolveSudoku
+from PythonScripts.photoToArray import photo_to_array
 import json
 app = FastAPI()
 
@@ -26,8 +28,14 @@ def test():
 @app.post('/api/read_numbers')
 def read_numbers(photo: bytes = File(...)):
     rand = randint(1,1000)
-    with open(f'image{rand}', 'wb') as img:
+    filename = f'image{rand}.jpg'
+    #filename = 'test.png'
+    with open(filename, 'wb') as img:
         img.write(photo)
-    return "File sent"
+    outputArray = photo_to_array(filename)  
+    os.remove(filename)    
+    return outputArray
+
+
 
 # [[" ", "2", " ", "4", " ", "6", " ", " ", " "], [" ", " ", " ", " ", " ", "5", " ", "7", " "], [" ", " ", " ", "1", " ", " ", " ", "3", " "], [" ", "1", " ", "8", " ", "2", " ", "9", " "], [" ", " ", "2", " ", "5", " ", " ", " ", " "], [" ", " ", " ", " ", " ", "7", "8", " ", " "], [" ", " ", " ", "5", " ", "8", "9", " ", " "], ["4", " ", " ", " ", " ", "6", " ", " ", " "], [" ", " ", "1", "4", " ", " ", " ", " ", " "]]

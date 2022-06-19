@@ -1,14 +1,23 @@
-import PythonScripts.trainningDataPreprocessing
+import trainningDataPreprocessing as dataset
 import numpy as np
 import tensorflow as tf
-from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+#import tflite
 import keras
 import os
+from keras.layers import Dense, Dropout, Flatten, Conv2D, MaxPooling2D
+
+
 global classes
 classes = 9
 
+
+filePath = "PrintedDigitRecognition13.h5"
+liteFilePath = "PrintedDigitRecognition13.tflite"#os.path.join("PythonScrpts","PrintedDigitRecognition13.tflite") #"PrintedDigitRecognitionLite13.h5")
+print(liteFilePath)
+
+
 def make_model():
-    trainImg, trainLab, testImg, testLab = trainningDataPreprocessing.get_processed_datasets(trainingSize=20000)
+    trainImg, trainLab, testImg, testLab = dataset.get_processed_datasets(trainingSize=20000)
     trainLab = keras.utils.np_utils.to_categorical(trainLab, classes)
     testLab = keras.utils.np_utils.to_categorical(testLab, classes)
 
@@ -21,14 +30,26 @@ def make_model():
     model.add(Dense(128, activation='relu'))
     model.add(Dropout(0.5))
     model.add(Dense(classes, activation='softmax'))
-    model.compile(loss ='categorical_crossentropy', optimizer="adam"   , metrics=['accuracy'])
+    model.compile(loss ='categorical_crossentropy', optimizer="adam", metrics=['accuracy'])
     hist = model.fit(trainImg, trainLab, batch_size = 1000, epochs = 10) 
-    
-    model.save(os.path.join("PythonScrpts","PrintedDigitRecognition13.h5"))
 
+
+    model.save(filePath)
     score = model.evaluate(testImg,testLab, verbose = 0)
     print("score:", score)
     return model
 
+def convert():
+    model = keras.models.load_model("PrintedDigitRecognition13.h5")
+    print("model:", type(model))
+
+ 
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    tfLiteModel = converter.convert()
+    with open(liteFilePath, "wb") as wfile:
+        wfile.write(tfLiteModel)
+
 
 make_model()
+
+convert()

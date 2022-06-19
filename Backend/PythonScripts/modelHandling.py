@@ -1,11 +1,14 @@
-import tensorflow as tf
+from code import InteractiveInterpreter
+import tflite
 import keras
 import cv2 as cv
-import PythonScripts.trainningDataPreprocessing
 import numpy as np
 
 
-model = keras.models.load_model("PrintedDigitRecognition13.h5")
+#Interpreter
+#interpreter = tf.lite.Interpreter("PrintedDigitRecognition13.tflite")
+model = keras.models.load_model()
+print("model:", type(model))
 
 def predictDigit(img):
 
